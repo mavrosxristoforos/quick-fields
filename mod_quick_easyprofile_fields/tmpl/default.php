@@ -1,6 +1,6 @@
 <?php
 /*------------------------------------------------------------------------
-# mod_quick_fields - Quick Fields
+# mod_quick_easyprofile_fields - Quick EasyProfile Fields
 # ------------------------------------------------------------------------
 # author    Christopher Mavros (www.mavrosxristoforos.com)
 # copyright Copyright (C) 2020 Mavrosxristoforos.com. All Rights Reserved.
@@ -19,8 +19,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <?php if ($params->get('pre_text', '') != '') { ?>
     <div class="mod_quick_fields_pre_text"><?php print $params->get('pre_text', ''); ?></div>
   <?php } ?>
-  <form name="quickfields<?php print $module->id; ?>" method="post">
-    <?php print $form->renderFieldset('quickfields'); ?>
+  <form name="easyprofile_quickfields<?php print $module->id; ?>" method="post">
+    <?php print $form->renderFieldset('easyprofile_quickfields'); ?>
     <button type="submit" class="mod_quickfields_save btn btn-primary"><?php print $params->get('button_text', 'Save'); ?></button>
   </form>
 </div>

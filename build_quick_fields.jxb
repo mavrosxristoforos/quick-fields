@@ -1,3 +1,6 @@
 INCVERSION:mod_quick_fields/mod_quick_fields.xml
 DELETE:mod_quick_fields.zip
 ZIPDIR:mod_quick_fields
+INCVERSION:mod_quick_easyprofile_fields/mod_quick_easyprofile_fields.xml
+DELETE:mod_quick_easyprofile_fields.zip
+ZIPDIR:mod_quick_easyprofile_fields

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" method="upgrade">
+    <name>Quick EasyProfile Fields</name>
+    <author>Christopher Mavros</author>
+<version>1.0.46</version>
+    <creationDate>April 2020</creationDate>
+    <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <authorEmail>mavrosxristoforos@gmail.com</authorEmail>
+    <authorUrl>https://mavrosxristoforos.com/</authorUrl>    
+    <description>Quick EasyProfile Fields - Show Fields from EasyProfile in a module with the ability to edit on spot</description>
+    <files>
+        <filename module="mod_quick_easyprofile_fields">mod_quick_easyprofile_fields.php</filename>
+        <filename>index.html</filename>
+        <folder>fields</folder>
+        <folder>tmpl</folder>
+    </files>
+    <languages folder="language">
+      <language tag="en-GB">en-GB/en-GB.mod_quick_easyprofile_fields.ini</language>
+    </languages>
+  <config>
+    <fields name="params">
+      <fieldset name="basic" addfieldpath="/modules/mod_quick_easyprofile_fields/fields">
+        <field name="fields" type="easyprofilefields" default="" label="MOD_QUICK_EASYPROFILE_FIELDS_FIELDS_LABEL" description="MOD_QUICK_EASYPROFILE_FIELDS_FIELDS_DESC" multiple="multiple"/>
+        <field name="pre_text" type="editor" filter="raw" default="" label="COM_MODULES_QUICK_EASYPROFILE_FIELDS_PRETEXT_FIELD_LBL" description="COM_MODULES_QUICK_EASYPROFILE_FIELDS_PRETEXT_FIELD_DESC"/>
+        <field name="button_text" type="text" default="Save" label="COM_MODULES_QUICK_EASYPROFILE_FIELDS_BUTTON_TEXT_FIELD_LBL" description="COM_MODULES_QUICK_EASYPROFILE_FIELDS_BUTTON_TEXT_FIELD_DESC"/>
+      </fieldset>
+      <fieldset name="advanced">
+        <field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>                  
+      </fieldset>
+    </fields>
+  </config>
+</extension>

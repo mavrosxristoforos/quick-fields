@@ -1,6 +1,6 @@
 <?php
 /*------------------------------------------------------------------------
-# mod_auto_cards - Auto Cards
+# mod_quick_fields - Quick Fields
 # ------------------------------------------------------------------------
 # author    Christopher Mavros (www.mavrosxristoforos.com)
 # copyright Copyright (C) 2020 Mavrosxristoforos.com. All Rights Reserved.
