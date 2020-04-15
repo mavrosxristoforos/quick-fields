@@ -30,6 +30,17 @@ $jsn_user = $db->loadObject();
 
 if (!$jsn_user) { return; } // EasyProfile user required!
 
+$app = JFactory::getApplication();
+
+if ($params->get('hide_on_other', '0') > '0') {
+  if ((strtolower($app->input->getVar('option')) == 'com_jsn') && (strtolower($app->input->getVar('view')) == 'profile')) {
+    $viewed_profile_id = $app->input->getInt('id', -1);
+    if (($viewed_profile_id != -1) && ($viewed_profile_id != $joomla_user->id)) {
+      return; // Hide on other people's profiles.
+    }
+  }
+}
+
 $query = $db->getQuery(true);
 $query->select('a.*')->from('#__jsn_fields AS a')->where('a.level = 2')->where('a.published = 1')->where('a.id IN ('.implode(',', $field_ids).')');
 $db->setQuery( $query );
@@ -41,7 +52,6 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 
-$app = JFactory::getApplication();
 $form = new JForm('easyprofile_quickfields');
 $xml = new DOMDocument('1.0', 'UTF-8');
 $fieldsNode = $xml->appendChild(new DOMElement('form'))->appendChild(new DOMElement('fields'));

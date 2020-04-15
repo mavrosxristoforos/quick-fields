@@ -2,7 +2,7 @@
 <extension type="module" version="3.0" method="upgrade">
     <name>Quick EasyProfile Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.46</version>
+<version>1.0.47</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
@@ -24,6 +24,10 @@
         <field name="fields" type="easyprofilefields" default="" label="MOD_QUICK_EASYPROFILE_FIELDS_FIELDS_LABEL" description="MOD_QUICK_EASYPROFILE_FIELDS_FIELDS_DESC" multiple="multiple"/>
         <field name="pre_text" type="editor" filter="raw" default="" label="COM_MODULES_QUICK_EASYPROFILE_FIELDS_PRETEXT_FIELD_LBL" description="COM_MODULES_QUICK_EASYPROFILE_FIELDS_PRETEXT_FIELD_DESC"/>
         <field name="button_text" type="text" default="Save" label="COM_MODULES_QUICK_EASYPROFILE_FIELDS_BUTTON_TEXT_FIELD_LBL" description="COM_MODULES_QUICK_EASYPROFILE_FIELDS_BUTTON_TEXT_FIELD_DESC"/>
+        <field name="hide_on_other" type="radio" default="0" class="btn-group btn-group-yesno" label="COM_MODULES_QUICK_EASYPROFILE_FIELDS_HIDE_ON_OTHER_LBL" description="COM_MODULES_QUICK_EASYPROFILE_FIELDS_HIDE_ON_OTHER_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
       </fieldset>
       <fieldset name="advanced">
         <field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>                  
