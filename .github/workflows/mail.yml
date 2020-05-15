@@ -1,0 +1,56 @@
+name: CD
+
+on:
+  push:
+    paths-ignore:
+    - '.github/**'
+    - '.git**'
+    - '**README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build Joomla Package
+      id: jxbuild
+      uses: mavrosxristoforos/jxb@1.0
+      with:
+        build-file: 'build_quick_fields.jxb'
+    - name: Get XML
+      id: getxml
+      uses: mavrosxristoforos/get-xml-info@1.0
+      with:
+        xml-file: 'pkg_quick_fields.xml'
+        xpath: '//version'
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.getxml.outputs.info }}
+        release_name: Quick Fields ${{ steps.getxml.outputs.info }}
+        #body: |
+        #    Changes in this Release
+        #    - First Change
+        #    - Second Change
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./pkg_quick_fields.zip
+        asset_name: pkg_quick_fields.zip
+        asset_content_type: application/zip          
+    #- name: Create Release
+    #  uses: ncipollo/release-action@v1
+    #  with:
+    #    artifacts: 'pkg_quick_fields.zip'
+    #    token: ${{ secrets.GITHUB_TOKEN }}
+    #    tag: ${{ steps.getxml.outputs.info }}
