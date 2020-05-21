@@ -2,7 +2,7 @@
 <extension type="module" version="3.0" method="upgrade">
     <name>Quick EasyProfile Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.48</version>
+<version>1.0.49</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
@@ -30,7 +30,11 @@
         </field>
       </fieldset>
       <fieldset name="advanced">
-        <field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>                  
+        <field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>
+        <field name="cache" type="list" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+          <option value="1">JGLOBAL_USE_GLOBAL</option>
+          <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+        </field>
       </fieldset>
     </fields>
   </config>
