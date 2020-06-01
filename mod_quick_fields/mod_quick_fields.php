@@ -30,8 +30,19 @@ $fieldsNode->setAttribute('name', 'mod_quickfields');
 $fieldset = $fieldsNode->appendChild(new DOMElement('fieldset'));
 $fieldset->setAttribute('name', 'quickfields');
 
-JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_fields/models/');
-$model = JModelLegacy::getInstance('Field', 'FieldsModel');
+if (version_compare(JVERSION, '4', '>=')) {
+  require_once(JPATH_SITE.'/modules/mod_quick_fields/helper.php');
+  $model = QFHelper::getModel();
+}
+else {
+  JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_fields/models/');
+  $model = JModelLegacy::getInstance('Field', 'FieldsModel');
+}
+
+if (!$model) {
+  print JText::_('MOD_QUICK_FIELDS_MODEL_NOT_FOUND');
+  return;
+}
 
 $user = JFactory::getUser();
 
@@ -50,14 +61,25 @@ foreach($field_ids as $field_id) {
         $context = $field->context;
         $item = $user;
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger('onCustomFieldsBeforePrepareField', array($context, $item, &$field));
-        $value = $dispatcher->trigger('onCustomFieldsPrepareField', array($context, $item, &$field));
-        if (is_array($value)) {
-          $value = implode(' ', $value);
+        if (version_compare(JVERSION, '4', '>=')) {
+          $app->triggerEvent('onCustomFieldsBeforePrepareField', array($context, $item, &$field));
+          $value = $app->triggerEvent('onCustomFieldsPrepareField', array($context, $item, &$field));
+          if (is_array($value)) {
+            $value = implode(' ', $value);
+          }
+          $app->triggerEvent('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
+          $field->value = $value;
         }
-        $dispatcher->trigger('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
-        $field->value = $value;
+        else {
+          $dispatcher = JEventDispatcher::getInstance();
+          $dispatcher->trigger('onCustomFieldsBeforePrepareField', array($context, $item, &$field));
+          $value = $dispatcher->trigger('onCustomFieldsPrepareField', array($context, $item, &$field));
+          if (is_array($value)) {
+            $value = implode(' ', $value);
+          }
+          $dispatcher->trigger('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
+          $field->value = $value;
+        }
       }
     }
     else {
