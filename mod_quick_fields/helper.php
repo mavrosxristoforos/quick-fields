@@ -14,7 +14,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-use Joomla\CMS\MVC\Factory\MVCFactory;
+use Joomla\CMS\MVC\Factory\MVCFactory; // Joomla 4 only!
 
 class QFHelper {
 

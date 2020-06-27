@@ -134,6 +134,87 @@ foreach($fields as $field) {
     }
 
     $form->setValue($field->name, 'mod_quickfields', $value);
+    $field->new_rawvalue = $value;
+  }
+}
+
+// If we need notifications about field value changes, we need to loop through the fields again, so that the new values
+// are parsed again into our $fields array, which is not affected just by calling $model->setFieldValue. That only alters the form we present later.
+if ($params->get('enable_notifications', '1')) {
+  $msg_fields_body = '';
+  $row = 0;
+  foreach($fields as $field) {
+    if (!in_array($field->id, $params->get('notification_fields', array()))) { continue; }
+    $field->original_value = $field->value;
+    $field->value = $field->new_rawvalue;
+    $field->rawvalue = $field->value;
+
+    $context = $field->context;
+    $item = $user;
+
+    if (version_compare(JVERSION, '4', '>=')) {
+      $app->triggerEvent('onCustomFieldsBeforePrepareField', array($context, $item, &$field));
+      $value = $app->triggerEvent('onCustomFieldsPrepareField', array($context, $item, &$field));
+      if (is_array($value)) {
+        $value = implode(' ', $value);
+      }
+      $app->triggerEvent('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
+      $field->value = $value; // This is the new value, nicely formatted
+    }
+    else {
+      $dispatcher = JEventDispatcher::getInstance();
+      $dispatcher->trigger('onCustomFieldsBeforePrepareField', array($context, $item, &$field));
+      $value = $dispatcher->trigger('onCustomFieldsPrepareField', array($context, $item, &$field));
+      if (is_array($value)) {
+        $value = implode(' ', $value);
+      }
+      $dispatcher->trigger('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
+      $field->value = $value; // This is the new value, nicely formatted
+    }
+    if ($field->value != $field->original_value) {
+      $msg_fields_body .= '<tr'.(($row == 1) ? ' style="background-color: #f9f9f9;"' : '').'><td>'.$field->title.'</td><td>'.$field->original_value.'</td><td>'.$field->value.'</td><td>'.date('r').'</td></tr>';
+      $row = 1-$row;
+    }
+  }
+  
+  if ($msg_fields_body != '') {
+    // Create email
+    $msg_fields_body = '<table width="80%" border="1"><tr style="background-color: #ccc; font-weight: bold;"><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_FIELD_TITLE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_PREVIOUS_VALUE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CURRENT_VALUE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CHANGED_ON').'</td></tr>'.$msg_fields_body.'</table>';
+
+    if (trim($params->get('notification_email', '')) != '') {
+      // TODO: Create Email!
+      $mail = JFactory::getMailer();
+      $mail->isHTML(true);
+      // Mail Recipients
+      $recipients = $params->get('notification_email', '');
+      foreach(explode(';', $recipients) as $recipient) {
+        $mail->addRecipient($recipient);
+      }
+      // Sender
+      $mail->setSender(array($app->getCfg('mailfrom'),$app->getCfg('fromname')));
+
+      // Subject
+      $subject = str_replace('%user%', $user->name.' (ID: '.$user->id.')', $params->get('notification_subject', 'Quick Fields Notification: %user% has changed some of his fields'));
+      $mail->setSubject($subject);
+
+      // Prepare Body
+      $body = str_replace('%user%', $user->name.' (ID: '.$user->id.', Email: '.$user->email.')', $params->get('notification_body', '<h3>Quick Fields Notification</h3><p>Some changes have occured on fields you want to monitor.</p><p>User: %user%</p><p>%fields%</p>'));
+      $preg_count = 0;
+      $body = preg_replace('/<(p|span)>\s*%fields%\s*<\/\1>/i', $msg_fields_body, $body, -1, $preg_count);
+      $str_count = 0;
+      $body = str_replace('%fields%', $msg_fields_body, $body, $str_count);
+      if (($str_count + $preg_count) == 0) {
+        $body .= JText::_('MOD_QUICK_FIELDS_NO_FIELDS_TAG_IN_BODY_WARNING');
+      }
+      $mail->setBody($body);
+
+      if ($mail->Send() !== true) {
+        print JText::_('MOD_QUICK_FIELDS_FAILED_SENDING_NOTIFICATION_EMAIL');
+      }
+    }
+    else {
+      print JText::_('MOD_QUICK_FIELDS_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT_BECAUSE_NO_RECIPIENT_SPECIFIED');
+    }
   }
 }
 

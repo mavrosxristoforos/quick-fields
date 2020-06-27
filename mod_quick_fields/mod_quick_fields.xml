@@ -2,7 +2,7 @@
 <extension type="module" version="3.0" method="upgrade">
     <name>Quick Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.53</version>
+<version>1.0.63</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
@@ -27,6 +27,16 @@
         <field name="fields" type="sql" default="" label="MOD_QUICK_FIELDS_FIELDS_LABEL" description="MOD_QUICK_FIELDS_FIELDS_DESC" query="SELECT `id`, CONCAT(`title`,' (', `context`, ')') as field_title FROM `#__fields` WHERE `state` = 1" key_field="id" value_field="field_title" multiple="multiple"/>
         <field name="pre_text" type="editor" filter="raw" default="" label="COM_MODULES_QUICK_FIELDS_PRETEXT_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_PRETEXT_FIELD_DESC"/>
         <field name="button_text" type="text" default="Save" label="COM_MODULES_QUICK_FIELDS_BUTTON_TEXT_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_BUTTON_TEXT_FIELD_DESC"/>
+      </fieldset>
+      <fieldset name="notifications" label="COM_MODULES_QUICK_FIELDS_FIELDSET_NOTIFICATIONS_LABEL">
+        <field name="enable_notifications" type="radio" label="MOD_QUICK_FIELDS_ENABLE_NOTIFICATIONS_LBL" description="MOD_QUICK_FIELDS_ENABLE_NOTIFICATIONS_DESC" class="btn-group btn-group-yesno" default="1">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="notification_email" type="email" label="COM_MODULES_QUICK_FIELDS_NOTIFICATION_EMAIL_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_NOTIFICATION_EMAIL_FIELD_DESC" showon="enable_notifications:1"/>
+        <field name="notification_fields" type="sql" default="" label="MOD_QUICK_FIELDS_NOTIFICATION_FIELDS_LABEL" description="MOD_QUICK_FIELDS_NOTIFICATION_FIELDS_DESC" query="SELECT `id`, CONCAT(`title`,' (', `context`, ')') as field_title FROM `#__fields` WHERE `state` = 1" key_field="id" value_field="field_title" multiple="multiple" showon="enable_notifications:1"/>
+        <field name="notification_subject" type="text" label="COM_MODULES_QUICK_FIELDS_NOTIFICATION_SUBJECT_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_NOTIFICATION_SUBJECT_FIELD_DESC" showon="enable_notifications:1" default="Quick Fields Notification: %user% has changed some of his fields"/>
+        <field name="notification_body" type="editor" filter="raw" label="COM_MODULES_QUICK_FIELDS_NOTIFICATION_BODY_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_NOTIFICATION_BODY_FIELD_LBL" showon="enable_notifications:1" default="&lt;h3&gt;Quick Fields Notification&lt;/h3&gt;&lt;p&gt;Some changes have occured on fields you want to monitor.&lt;/p&gt;&lt;p&gt;User: %user%&lt;/p&gt;&lt;p&gt;%fields%&lt;/p&gt;"/>
       </fieldset>
       <fieldset name="advanced">
         <field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>
