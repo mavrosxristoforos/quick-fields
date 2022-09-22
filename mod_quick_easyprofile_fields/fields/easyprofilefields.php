@@ -33,14 +33,17 @@ class JFormFieldEasyProfileFields extends JFormFieldList
 
   public function getOptions() {
     $db = JFactory::getDBO();
-    $db->setQuery('SELECT a.`id` as `value`, a.`title` as `text` FROM `#__jsn_fields` AS a WHERE a.`alias` <> "root" AND (a.`published` IN (0, 1)) ORDER BY a.`lft` asc');
-    $results = $db->loadObjectList();
-    foreach($results as $result) {
-      if (JText::_($result->text) != $result->text) {
-        $result->text = JText::_($result->text);
+    if ($db->setQuery('SHOW TABLES LIKE "%jsn_fields%"')->loadResult()) {
+      $db->setQuery('SELECT a.`id` as `value`, a.`title` as `text` FROM `#__jsn_fields` AS a WHERE a.`alias` <> "root" AND (a.`published` IN (0, 1)) ORDER BY a.`lft` asc');
+      $results = $db->loadObjectList();
+      foreach($results as $result) {
+        if (JText::_($result->text) != $result->text) {
+          $result->text = JText::_($result->text);
+        }
       }
+      return $results;
     }
-    return $results;
+    return array();
   }
 
 }
