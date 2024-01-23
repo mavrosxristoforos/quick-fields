@@ -2,7 +2,7 @@
 <extension type="module" version="3.0" method="upgrade" client="site">
     <name>Quick Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.64</version>
+<version>1.0.70</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>

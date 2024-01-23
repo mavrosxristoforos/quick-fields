@@ -9,19 +9,17 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.form.helper');
-jimport('joomla.form.formfield');
-jimport('joomla.html.html');
-JFormHelper::loadFieldClass('list');
-
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Form\FormHelper;
+use \Joomla\CMS\Form\Field\ListField;
 
 /**
  * Shows a customized list of EasyProfile fields.
  *
  * @since  1.6
  */
-class JFormFieldEasyProfileFields extends JFormFieldList
+class JFormFieldEasyProfileFields extends ListField
 {
   /**
    * The form field type.
@@ -32,13 +30,13 @@ class JFormFieldEasyProfileFields extends JFormFieldList
   protected $type = 'easyprofilefields';
 
   public function getOptions() {
-    $db = JFactory::getDBO();
+    $db = Factory::getDBO();
     if ($db->setQuery('SHOW TABLES LIKE "%jsn_fields%"')->loadResult()) {
       $db->setQuery('SELECT a.`id` as `value`, a.`title` as `text` FROM `#__jsn_fields` AS a WHERE a.`alias` <> "root" AND (a.`published` IN (0, 1)) ORDER BY a.`lft` asc');
       $results = $db->loadObjectList();
       foreach($results as $result) {
-        if (JText::_($result->text) != $result->text) {
-          $result->text = JText::_($result->text);
+        if (Text::_($result->text) != $result->text) {
+          $result->text = Text::_($result->text);
         }
       }
       return $results;

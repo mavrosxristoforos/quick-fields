@@ -12,18 +12,29 @@
 -------------------------------------------------------------------------*/
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+\defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Helper\ModuleHelper;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use \Joomla\CMS\Plugin\PluginHelper;
+use \Joomla\CMS\Form\Form;
+use \Joomla\Registry\Registry;
 
 $field_ids = $params->get('fields', array());
 
-JPluginHelper::importPlugin('fields');
-JHtml::_('jquery.framework');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('formbehavior.chosen', 'select');
+PluginHelper::importPlugin('fields');
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
+if (version_compare(JVERSION, '4', '<')) {
+  HTMLHelper::_('formbehavior.chosen', 'select');
+}
 
-$app = JFactory::getApplication();
-$form = new JForm('quickfields');
+$app = Factory::getApplication();
+$form = new Form('quickfields');
 $xml = new DOMDocument('1.0', 'UTF-8');
 $fieldsNode = $xml->appendChild(new DOMElement('form'))->appendChild(new DOMElement('fields'));
 $fieldsNode->setAttribute('name', 'mod_quickfields');
@@ -35,22 +46,22 @@ if (version_compare(JVERSION, '4', '>=')) {
   $model = QFHelper::getModel();
 }
 else {
-  JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_fields/models/');
-  $model = JModelLegacy::getInstance('Field', 'FieldsModel');
+  BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_fields/models/');
+  $model = BaseDatabaseModel::getInstance('Field', 'FieldsModel');
 }
 
 if (!$model) {
-  print JText::_('MOD_QUICK_FIELDS_MODEL_NOT_FOUND');
+  print Text::_('MOD_QUICK_FIELDS_MODEL_NOT_FOUND');
   return;
 }
 
-$user = JFactory::getUser();
+$user = Factory::getUser();
 
 $fields = array();
 foreach($field_ids as $field_id) {
   $field = $model->getItem($field_id);
-  $field->params = new JRegistry($field->params);
-  $field->fieldparams = new JRegistry($field->fieldparams);
+  $field->params = new Registry($field->params);
+  $field->fieldparams = new Registry($field->fieldparams);
   if($field->context == 'com_users.user') {
     if (!$user->guest) {
       $fieldValues = $model->getFieldValues($field_ids, $user->id);
@@ -80,6 +91,9 @@ foreach($field_ids as $field_id) {
           $dispatcher->trigger('onCustomFieldsAfterPrepareField', array($context, $item, $field, &$value));
           $field->value = $value;
         }
+      }
+      else {
+        $field->value = null;
       }
     }
     else {
@@ -124,6 +138,7 @@ foreach($fields as $field) {
   if (!is_null($data)) {
     $value = $model->getFieldValue($field->id, $data->id);
     if ($value === null) {
+      $field->new_rawvalue = null;
       continue;
     }
     if (!is_array($value) && $value !== '') {
@@ -179,11 +194,11 @@ if ($params->get('enable_notifications', '1')) {
   
   if ($msg_fields_body != '') {
     // Create email
-    $msg_fields_body = '<table width="80%" border="1"><tr style="background-color: #ccc; font-weight: bold;"><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_FIELD_TITLE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_PREVIOUS_VALUE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CURRENT_VALUE').'</td><td>'.JText::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CHANGED_ON').'</td></tr>'.$msg_fields_body.'</table>';
+    $msg_fields_body = '<table width="80%" border="1"><tr style="background-color: #ccc; font-weight: bold;"><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_FIELD_TITLE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_PREVIOUS_VALUE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CURRENT_VALUE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CHANGED_ON').'</td></tr>'.$msg_fields_body.'</table>';
 
     if (trim($params->get('notification_email', '')) != '') {
       // TODO: Create Email!
-      $mail = JFactory::getMailer();
+      $mail = Factory::getMailer();
       $mail->isHTML(true);
       // Mail Recipients
       $recipients = $params->get('notification_email', '');
@@ -204,22 +219,22 @@ if ($params->get('enable_notifications', '1')) {
       $str_count = 0;
       $body = str_replace('%fields%', $msg_fields_body, $body, $str_count);
       if (($str_count + $preg_count) == 0) {
-        $body .= JText::_('MOD_QUICK_FIELDS_NO_FIELDS_TAG_IN_BODY_WARNING');
+        $body .= Text::_('MOD_QUICK_FIELDS_NO_FIELDS_TAG_IN_BODY_WARNING');
       }
       $mail->setBody($body);
 
       if ($mail->Send() !== true) {
-        print JText::_('MOD_QUICK_FIELDS_FAILED_SENDING_NOTIFICATION_EMAIL');
+        print Text::_('MOD_QUICK_FIELDS_FAILED_SENDING_NOTIFICATION_EMAIL');
       }
     }
     else {
-      print JText::_('MOD_QUICK_FIELDS_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT_BECAUSE_NO_RECIPIENT_SPECIFIED');
+      print Text::_('MOD_QUICK_FIELDS_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT_BECAUSE_NO_RECIPIENT_SPECIFIED');
     }
   }
 }
 
 if ((is_array($form->getFieldset('quickfields'))) && (count($form->getFieldset('quickfields')) > 0)) {
-  require JModuleHelper::getLayoutPath('mod_quick_fields');
+  require ModuleHelper::getLayoutPath('mod_quick_fields');
 }
 
 ?>

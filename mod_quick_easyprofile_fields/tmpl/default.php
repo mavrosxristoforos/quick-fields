@@ -12,7 +12,7 @@
 -------------------------------------------------------------------------*/
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+\defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
 <div class="mod_quick_fields <?php print $params->get('moduleclass_sfx', ''); ?>">

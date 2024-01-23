@@ -12,9 +12,9 @@
 -------------------------------------------------------------------------*/
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+\defined( '_JEXEC' ) or die( 'Restricted access' );
 
-use Joomla\CMS\MVC\Factory\MVCFactory; // Joomla 4 only!
+use \Joomla\CMS\MVC\Factory\MVCFactory; // Joomla 4 only!
 
 class QFHelper {
 

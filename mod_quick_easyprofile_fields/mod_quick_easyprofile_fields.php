@@ -12,17 +12,24 @@
 -------------------------------------------------------------------------*/
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+\defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Helper\ModuleHelper;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Form\Form;
+use \Joomla\Registry\Registry;
+//use \Joomla\CMS\Plugin\PluginHelper;
 
 $field_ids = $params->get('fields', array());
 
-$joomla_user = JFactory::getUser();
+$joomla_user = Factory::getUser();
 if ($joomla_user->guest) {
   // Requires login
   return;
 }
 
-$db = JFactory::getDBO();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 $query->select('a.*')->from('#__jsn_users AS a')->where('a.id = '.$joomla_user->id);
 $db->setQuery( $query );
@@ -30,7 +37,7 @@ $jsn_user = $db->loadObject();
 
 if (!$jsn_user) { return; } // EasyProfile user required!
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 if ($params->get('hide_on_other', '0') > '0') {
   if ((strtolower($app->input->getVar('option')) == 'com_jsn') && (strtolower($app->input->getVar('view')) == 'profile')) {
@@ -46,13 +53,13 @@ $query->select('a.*')->from('#__jsn_fields AS a')->where('a.level = 2')->where('
 $db->setQuery( $query );
 $fields = $db->loadObjectList();
 
-//JPluginHelper::importPlugin('fields');
-JHtml::_('jquery.framework');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('formbehavior.chosen', 'select');
+//PluginHelper::importPlugin('fields');
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-$form = new JForm('easyprofile_quickfields');
+$form = new Form('easyprofile_quickfields');
 $xml = new DOMDocument('1.0', 'UTF-8');
 $fieldsNode = $xml->appendChild(new DOMElement('form'))->appendChild(new DOMElement('fields'));
 $fieldsNode->setAttribute('name', 'mod_quick_easyprofile_fields');
@@ -64,7 +71,7 @@ if (!JHtml::isRegistered('jsn.email')) {
   JHtml::register('jsn.email', array('JsnUsermailFieldHelper', 'usermail'));
 }
 foreach($fields as $field) {
-  $field->params = new JRegistry($field->params);
+  $field->params = new Registry($field->params);
 
   $class='Jsn'.ucfirst($field->type).'FieldHelper';
   if(class_exists($class)) $class::loadData($field, $jsn_user, $joomla_user);
@@ -119,7 +126,7 @@ foreach($fields as $field) {
 }
 
 if ((is_array($form->getFieldset('easyprofile_quickfields'))) && (count($form->getFieldset('easyprofile_quickfields')) > 0)) {
-  require JModuleHelper::getLayoutPath('mod_quick_easyprofile_fields');
+  require ModuleHelper::getLayoutPath('mod_quick_easyprofile_fields');
 }
 
 ?>
