@@ -62,7 +62,7 @@ foreach($field_ids as $field_id) {
   $field = $model->getItem($field_id);
   $field->params = new Registry($field->params);
   $field->fieldparams = new Registry($field->fieldparams);
-  if($field->context == 'com_users.user') {
+  if ($field->context == 'com_users.user') {
     if (!$user->guest) {
       $fieldValues = $model->getFieldValues($field_ids, $user->id);
       if (isset($fieldValues[$field_id])) {
@@ -111,7 +111,7 @@ if ($app->input->exists('mod_quickfields')) {
   $data = $app->input->get('mod_quickfields', array(), 'raw');
   foreach($fields as $field) {
     if (isset($data[$field->name])) {
-      if($field->context == 'com_users.user') {
+      if ($field->context == 'com_users.user') {
         if (!$user->guest) {
           $model->setFieldValue($field->id, $user->id, $data[$field->name]);
         }
@@ -126,7 +126,7 @@ if ($app->input->exists('mod_quickfields')) {
 // Loop through the fields again to set the value
 foreach($fields as $field) {
   $data = null;
-  if($field->context == 'com_users.user') {
+  if ($field->context == 'com_users.user') {
     if (!$user->guest) {
       $data = $user;
     }

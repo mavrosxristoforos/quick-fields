@@ -67,8 +67,8 @@ $fieldset = $fieldsNode->appendChild(new DOMElement('fieldset'));
 $fieldset->setAttribute('name', 'easyprofile_quickfields');
 $fieldset_xpath = '//fieldset[@name="easyprofile_quickfields"]';
 
-if (!JHtml::isRegistered('jsn.email')) {
-  JHtml::register('jsn.email', array('JsnUsermailFieldHelper', 'usermail'));
+if (!HtmlHelper::isRegistered('jsn.email')) {
+  HtmlHelper::register('jsn.email', array('JsnUsermailFieldHelper', 'usermail'));
 }
 foreach($fields as $field) {
   $field->params = new Registry($field->params);
@@ -76,8 +76,8 @@ foreach($fields as $field) {
   $class='Jsn'.ucfirst($field->type).'FieldHelper';
   if(class_exists($class)) $class::loadData($field, $jsn_user, $joomla_user);
 
-  if (!JHtml::isRegistered('jsn.'.$field->type)) {
-    JHtml::register('jsn.'.$field->type, array($class, $field->type));
+  if (!HtmlHelper::isRegistered('jsn.'.$field->type)) {
+    HtmlHelper::register('jsn.'.$field->type, array($class, $field->type));
   }
   $xmlstring = trim($class::getXml($field));
   $fragment = $xml->createDocumentFragment();

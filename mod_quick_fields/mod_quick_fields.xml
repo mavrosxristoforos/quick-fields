@@ -2,7 +2,7 @@
 <extension type="module" version="3.0" method="upgrade" client="site">
     <name>Quick Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.70</version>
+<version>1.0.71</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
@@ -24,7 +24,7 @@
   <config>
     <fields name="params">
       <fieldset name="basic">
-        <field name="fields" type="sql" default="" label="MOD_QUICK_FIELDS_FIELDS_LABEL" description="MOD_QUICK_FIELDS_FIELDS_DESC" query="SELECT `id`, CONCAT(`title`,' (', `context`, ')') as field_title FROM `#__fields` WHERE `state` = 1" key_field="id" value_field="field_title" multiple="multiple"/>
+        <field name="fields" type="sql" default="" label="MOD_QUICK_FIELDS_FIELDS_LABEL" description="MOD_QUICK_FIELDS_FIELDS_DESC" query="SELECT `id`, CONCAT(`title`,' (', `context`, ')') as field_title FROM `#__fields` WHERE `state` = 1" key_field="id" value_field="field_title" multiple="multiple" layout="joomla.form.field.list-fancy-select"/>
         <field name="pre_text" type="editor" filter="raw" default="" label="COM_MODULES_QUICK_FIELDS_PRETEXT_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_PRETEXT_FIELD_DESC"/>
         <field name="button_text" type="text" default="Save" label="COM_MODULES_QUICK_FIELDS_BUTTON_TEXT_FIELD_LBL" description="COM_MODULES_QUICK_FIELDS_BUTTON_TEXT_FIELD_DESC"/>
       </fieldset>
