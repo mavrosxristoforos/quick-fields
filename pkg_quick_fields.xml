@@ -7,15 +7,15 @@
   <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
   <author>Christopher Mavros</author>
   <authorEmail>mavrosxristoforos@gmail.com</authorEmail>
-  <authorUrl>http://mavrosxristoforos.com</authorUrl>
-<version>1.0.71</version>
+  <authorUrl>https://mavxr.com</authorUrl>
+<version>1.0.72</version>
   <description>Quick Fields - Show Custom Fields in a module with the ability to edit on spot</description>
   <files>
     <file type="module" id="mod_quick_fields">mod_quick_fields.zip</file>
     <file type="module" id="mod_quick_easyprofile_fields">mod_quick_easyprofile_fields.zip</file>
   </files>
   <updateservers>
-    <server type="extension" priority="1" name="Quick Fields Updates">https://mavrosxristoforos.com/index.php?option=com_extensionupdater&amp;extension=quick_fields&amp;p_email=an_email&amp;username=an_username</server>
+    <server type="extension" priority="1" name="Quick Fields Updates">https://mavxr.com/index.php?option=com_extensionupdater&amp;extension=quick_fields&amp;p_email=an_email&amp;username=an_username</server>
   </updateservers>
   <params/>
   <config/>

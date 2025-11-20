@@ -2,13 +2,13 @@
 /*------------------------------------------------------------------------
 # mod_quick_easyprofile_fields - Quick EasyProfile Fields
 # ------------------------------------------------------------------------
-# author    Christopher Mavros (www.mavrosxristoforos.com)
-# copyright Copyright (C) 2020 Mavrosxristoforos.com. All Rights Reserved.
+# author    Christopher Mavros (https://mavxr.com)
+# copyright Copyright (C) 2008 Mavxr.com. All Rights Reserved.
 # @license - http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
-# Websites: https://mavrosxristoforos.com
-# Technical Support: https://mavrosxristoforos.com/contact
-# FAQ: https://mavrosxristoforos.com/faq/111-nearestplacesfaq
-# Forum: https://mavrosxristoforos.com/forum
+# Websites: https://mavxr.com
+# Technical Support: https://mavxr.com/contact
+# FAQ: https://mavxr.com/faq/111-nearestplacesfaq
+# Forum: https://mavxr.com/forum
 -------------------------------------------------------------------------*/
 
 // no direct access

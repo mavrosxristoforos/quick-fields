@@ -2,12 +2,12 @@
 <extension type="module" version="3.0" method="upgrade" client="site">
     <name>Quick Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.71</version>
+<version>1.0.72</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <authorEmail>mavrosxristoforos@gmail.com</authorEmail>
-    <authorUrl>https://mavrosxristoforos.com/</authorUrl>    
+    <authorUrl>https://mavxr.com/</authorUrl>
     <description>Quick Fields - Show Custom Fields in a module with the ability to edit on spot</description>
     <files>
         <filename module="mod_quick_fields">mod_quick_fields.php</filename>
@@ -19,7 +19,7 @@
       <language tag="en-GB">en-GB/en-GB.mod_quick_fields.ini</language>
     </languages>
   <updateservers>
-    <server type="extension" priority="1" name="Quick Fields Updates">https://mavrosxristoforos.com/index.php?option=com_extensionupdater&amp;extension=quick_fields&amp;p_email=an_email&amp;username=an_username</server>
+    <server type="extension" priority="1" name="Quick Fields Updates">https://mavxr.com/index.php?option=com_extensionupdater&amp;extension=quick_fields&amp;p_email=an_email&amp;username=an_username</server>
   </updateservers>
   <config>
     <fields name="params">

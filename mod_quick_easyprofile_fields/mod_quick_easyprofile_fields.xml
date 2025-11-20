@@ -2,12 +2,12 @@
 <extension type="module" version="3.0" method="upgrade" client="site">
     <name>Quick EasyProfile Fields</name>
     <author>Christopher Mavros</author>
-<version>1.0.71</version>
+<version>1.0.72</version>
     <creationDate>April 2020</creationDate>
     <copyright>Copyright (C) 2020 Christopher Mavros. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <authorEmail>mavrosxristoforos@gmail.com</authorEmail>
-    <authorUrl>https://mavrosxristoforos.com/</authorUrl>    
+    <authorUrl>https://mavxr.com/</authorUrl>
     <description>Quick EasyProfile Fields - Show Fields from EasyProfile in a module with the ability to edit on spot</description>
     <files>
         <filename module="mod_quick_easyprofile_fields">mod_quick_easyprofile_fields.php</filename>
