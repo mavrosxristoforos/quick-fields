@@ -14,6 +14,9 @@
 // no direct access
 \defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <div class="mod_quick_fields <?php print $params->get('moduleclass_sfx', ''); ?>">
   <?php if ($params->get('pre_text', '') != '') { ?>
@@ -21,6 +24,33 @@
   <?php } ?>
   <form name="quickfields<?php print $module->id; ?>" method="post">
     <?php print $form->renderFieldset('quickfields'); ?>
+
+    <?php if (!empty($errors)) {
+      HTMLHelper::_('bootstrap.alert');
+      foreach($errors as $error) {
+        ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php print $error; ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?php print Text::_('MOD_QUICK_FIELDS_BUTTON_CLOSE_ARIA_TEXT'); ?>"></button>
+          </div>
+        <?php
+      }
+    } ?>
+
+    <?php if (!empty($messages)) {
+      HTMLHelper::_('bootstrap.alert');
+      foreach($messages as $message) {
+        ?>
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <?php print $message; ?>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?php print Text::_('MOD_QUICK_FIELDS_BUTTON_CLOSE_ARIA_TEXT'); ?>"></button>
+          </div>
+        <?php
+      }
+    } ?>
+
     <button type="submit" class="mod_quickfields_save btn btn-primary"><?php print $params->get('button_text', 'Save'); ?></button>
   </form>
 </div>

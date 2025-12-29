@@ -24,6 +24,9 @@ use \Joomla\CMS\Form\Form;
 use \Joomla\Registry\Registry;
 
 $field_ids = $params->get('fields', array());
+$save_text = $params->get('save_text', '<p><strong>Changes saved successfully.</strong></p>');
+$errors = [];
+$messages = [];
 
 PluginHelper::importPlugin('fields');
 HTMLHelper::_('jquery.framework');
@@ -155,7 +158,7 @@ foreach($fields as $field) {
 
 // If we need notifications about field value changes, we need to loop through the fields again, so that the new values
 // are parsed again into our $fields array, which is not affected just by calling $model->setFieldValue. That only alters the form we present later.
-if ($params->get('enable_notifications', '1')) {
+if ($params->get('enable_notifications', '1') || (!empty($save_text))) {
   $msg_fields_body = '';
   $row = 0;
   foreach($fields as $field) {
@@ -197,7 +200,6 @@ if ($params->get('enable_notifications', '1')) {
     $msg_fields_body = '<table width="80%" border="1"><tr style="background-color: #ccc; font-weight: bold;"><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_FIELD_TITLE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_PREVIOUS_VALUE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CURRENT_VALUE').'</td><td>'.Text::_('MOD_QUICK_FIELDS_NOTIFICATION_HEADER_CHANGED_ON').'</td></tr>'.$msg_fields_body.'</table>';
 
     if (trim($params->get('notification_email', '')) != '') {
-      // TODO: Create Email!
       $mail = Factory::getMailer();
       $mail->isHTML(true);
       // Mail Recipients
@@ -224,11 +226,16 @@ if ($params->get('enable_notifications', '1')) {
       $mail->setBody($body);
 
       if ($mail->Send() !== true) {
-        print Text::_('MOD_QUICK_FIELDS_FAILED_SENDING_NOTIFICATION_EMAIL');
+        $errors[] = Text::_('MOD_QUICK_FIELDS_FAILED_SENDING_NOTIFICATION_EMAIL');
       }
     }
     else {
-      print Text::_('MOD_QUICK_FIELDS_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT_BECAUSE_NO_RECIPIENT_SPECIFIED');
+      $errors[] = Text::_('MOD_QUICK_FIELDS_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT_BECAUSE_NO_RECIPIENT_SPECIFIED');
+    }
+
+    // Show save text
+    if (!empty($save_text)) {
+      $messages[] = $save_text;
     }
   }
 }
