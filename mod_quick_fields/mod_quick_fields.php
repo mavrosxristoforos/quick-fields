@@ -114,13 +114,16 @@ if ($app->input->exists('mod_quickfields')) {
   $data = $app->input->get('mod_quickfields', array(), 'raw');
   foreach($fields as $field) {
     if (isset($data[$field->name])) {
-      if ($field->context == 'com_users.user') {
-        if (!$user->guest) {
-          $model->setFieldValue($field->id, $user->id, $data[$field->name]);
-        }
-        else {
-          // This field requires log-in
-        }
+      $value = $data[$field->name];
+      // Subform support
+      if ($field->type === 'subform') {
+          // Joomla expects JSON for subform values
+          if (is_array($value)) {
+              $value = json_encode($value);
+          }
+      }
+      if ($field->context == 'com_users.user' && !$user->guest) {
+          $model->setFieldValue($field->id, $user->id, $value);
       }
     }
   }
@@ -140,6 +143,13 @@ foreach($fields as $field) {
   }
   if (!is_null($data)) {
     $value = $model->getFieldValue($field->id, $data->id);
+    // Subform support
+    if ($field->type === 'subform' && is_string($value)) {
+      $decoded = json_decode($value, true);
+      if (json_last_error() === JSON_ERROR_NONE) {
+          $value = $decoded;
+      }
+    }
     if ($value === null) {
       $field->new_rawvalue = null;
       continue;
